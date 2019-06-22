@@ -1,0 +1,8 @@
+spring:
+  security:
+    user:
+      name: sfj
+      password: admin
+      roles:
+        - USER
+        - ADMIN
