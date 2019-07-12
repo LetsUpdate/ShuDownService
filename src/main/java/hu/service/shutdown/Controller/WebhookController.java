@@ -2,7 +2,7 @@ package hu.service.shutdown.Controller;
 
 import hu.service.shutdown.service.WebhookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,15 +16,12 @@ public class WebhookController {
         this.webhookService = webhookService;
     }
 
-    @RequestMapping("/computer/{param}")
-    public void Reboot(@PathVariable("param") String param) {
-        if (param == null) {
+    @RequestMapping("/computer")
+    public void Reboot(@RequestBody String param) {
+        if (param == null)
             return;
-        }
-        param = param.toLowerCase().substring(1);
-
+        param = param.toLowerCase();
         webhookService.pcManager(param);
         System.out.println("Késsz:" + param);
     }
-
 }

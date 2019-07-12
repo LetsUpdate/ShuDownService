@@ -2,11 +2,10 @@ package hu.service.shutdown.Controller;
 
 import hu.service.shutdown.service.WebhookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/phone")
 @RestController()
 public class phoneController {
 
@@ -17,8 +16,8 @@ public class phoneController {
         this.webhookService = webhookService;
     }
 
-    @RequestMapping("/{par}")
-    public String Reboot(@PathVariable("par") String param) {
+    @RequestMapping("/phone")
+    public String Reboot(@RequestHeader("command") String param) {
         if (param == null)
             return "nem talállható";
         System.out.println("Késsz:" + param);
