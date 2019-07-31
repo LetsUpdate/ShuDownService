@@ -2,6 +2,8 @@ package hu.service.shutdown.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class WebhookService {
 
@@ -10,8 +12,20 @@ public class WebhookService {
     private final String[] REBOOT_STRINGS = {"reboot", "restart"};
     private final String[] HIBERNATE_STRINGS = {"hibernate", "freez"};
     private final String[] LOGOUT = {"logout", "sing out"};
-    private final String[] SLEEP = {"sleep"};
+    private final String[] SLEEP_STRINGS = {"sleep"};
     private final String[] MONITOR_OFF = {"monitor", "off monitor", "monitor off"};
+    private Operations operations;
+
+    private WebhookService(){
+        operations.addOperation(new Operations.Operation("shutdown -s -t 10",POWER_OFF_STRINGS));
+        operations.addOperation(new Operations.Operation("shutdown -r -t 10",REBOOT_STRINGS));
+        operations.addOperation(new Operations.Operation("shutdown -h",HIBERNATE_STRINGS));
+        operations.addOperation(new Operations.Operation("shutdown -l",LOGOUT));
+        operations.addOperation(new Operations.Operation("extras sleep",SLEEP_STRINGS));
+        operations.addOperation(new Operations.Operation("extras monitorOff",MONITOR_OFF));
+
+    }
+
 
     private boolean isConstains(String[] array, String equals) {
         for (int i = 0; i < array.length; i++)
@@ -25,7 +39,7 @@ public class WebhookService {
         else if (isConstains(REBOOT_STRINGS, operatino)) operatino = REBOOT_STRINGS[0];
         else if (isConstains(HIBERNATE_STRINGS, operatino)) operatino = HIBERNATE_STRINGS[0];
         else if (isConstains(LOGOUT, operatino)) operatino = LOGOUT[0];
-        else if (isConstains(SLEEP, operatino)) operatino = SLEEP[0];
+        else if (isConstains(SLEEP_STRINGS, operatino)) operatino = SLEEP_STRINGS[0];
         else if (isConstains(MONITOR_OFF, operatino)) operatino = MONITOR_OFF[0];
         else if (operatino.equals("test")) return "A teszt sikeres";
         else {
