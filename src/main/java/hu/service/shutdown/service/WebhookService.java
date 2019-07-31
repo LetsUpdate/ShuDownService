@@ -12,17 +12,11 @@ public class WebhookService {
     private final String[] LOGOUT = {"logout", "sing out"};
     private final String[] SLEEP = {"sleep"};
     private final String[] MONITOR_OFF = {"monitor", "off monitor", "monitor off"};
-    private final Object[] STRINGS = {POWER_OFF_STRINGS, REBOOT_STRINGS, HIBERNATE_STRINGS, LOGOUT, SLEEP, MONITOR_OFF};
 
     private boolean isConstains(String[] array, String equals) {
         for (int i = 0; i < array.length; i++)
             if (array[i].equals(equals)) return true;
         return false;
-    }
-
-    private String preparer(String[] param, String operation) {
-        if (isConstains(param, operation)) operation = param[0];
-        return operation;
     }
 
     //endregion
@@ -84,7 +78,4 @@ public class WebhookService {
 
     }
 
-    class Operation {
-        private String[] synonyms;
-    }
 }
