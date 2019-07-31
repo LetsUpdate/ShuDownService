@@ -1,17 +1,18 @@
 package hu.service.shutdown.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Operations {
-    private List<Operation> operations;
+    private List<Operation> operations = new ArrayList<>();
     public void addOperation(Operation operation){
         operations.add(operation);
     }
     public void runOperationByTriggerString(String string){
         for (Operation op:
              operations) {
-            if(op.getTriggerWords().equals(string)) {
+            if(op.isConstaint(string)) {
                 op.execute();
                 return;
             }
@@ -52,10 +53,8 @@ public class Operations {
             if(triggerWords.contains(triggerWord)) return;
             triggerWords.add(triggerWord);
         }
-        public void runIfConstaintWord(String word){
-            if(triggerWords==null) return;
-            if(triggerWords.contains(word))
-                execute();
+        public boolean isConstaint(String word){
+            return triggerWords.contains(word);
         }
     }
 
