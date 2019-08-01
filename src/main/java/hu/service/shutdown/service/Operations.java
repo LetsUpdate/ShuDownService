@@ -2,14 +2,9 @@ package hu.service.shutdown.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 interface IDK {
     boolean isConstaint(String word);
@@ -24,7 +19,6 @@ interface IDK {
 }
 
 public class Operations {
-    Runtime runtime = Runtime.getRuntime();
     private List<IDK> operations = new ArrayList<>();
 
     public void addNewOperation(IDK operation) {
@@ -101,23 +95,16 @@ class ApplicationOperation extends Operations implements IDK {
     }
 
     private List<String> getFileList(String folder) {
-        List<String> fileList = new ArrayList<>();
-        makeDir(FOLDER_LOCATION);
-        try (Stream<Path> walk = Files.walk(Paths.get(folder))) {
-
-            fileList = walk.filter(Files::isRegularFile)
-                    .map(x -> x.toString()).collect(Collectors.toList());
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        File file = new File(folder);
+        List<String> list = new ArrayList<String>();
+        file.mkdir();
+        for (File f : file.listFiles()
+        ) {
+            list.add(f.getName());
         }
-        System.out.println(fileList);
-        return fileList;
-    }
 
-    private void makeDir(String path) {
-        File theDir = new File(path);
-        theDir.mkdir();
+        System.out.println(list);
+        return list;
     }
 
     public void updateAppList() {
@@ -128,12 +115,13 @@ class ApplicationOperation extends Operations implements IDK {
     public boolean isConstaint(String word) {
         for (String a :
                 triggerWords) {
-            if (a.contains(word)) {
-                word = word.substring(a.length() + 1);
+            if (word.contains(a)) {
+                word = word.substring(a.length() + 1).toLowerCase();
+
                 for (String b : applications) {
-                    if (b.toLowerCase().contains(word.toLowerCase())) {
+                    if (b.toLowerCase().contains(word)) {
                         try {
-                            Runtime.getRuntime().exec(b);
+                            Runtime.getRuntime().exec("rundll32 SHELL32.DLL,ShellExec_RunDLL " + FOLDER_LOCATION + "//" + b);
                             return true;
                         } catch (IOException e) {
                             System.err.println("Execute hiba");
