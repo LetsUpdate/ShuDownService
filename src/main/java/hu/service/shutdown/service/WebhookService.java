@@ -1,9 +1,6 @@
 package hu.service.shutdown.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class WebhookService {
@@ -15,22 +12,18 @@ public class WebhookService {
     private final String[] LOGOUT = {"logout", "sing out"};
     private final String[] SLEEP_STRINGS = {"sleep"};
     private final String[] MONITOR_OFF = {"monitor", "off monitor", "monitor off"};
-
-
-
-    private Operations operations;
+    private final String[] APPLICATION_START_STRINGS = {"start", "run",};
+    private Operations operations = new Operations();
 
     private WebhookService(){
-        operations = new Operations();
-        operations.addOperation(new Operations.Operation("shutdown -s -t 10",POWER_OFF_STRINGS));
-        operations.addOperation(new Operations.Operation("shutdown -r -t 10",REBOOT_STRINGS));
-        operations.addOperation(new Operations.Operation("shutdown -h",HIBERNATE_STRINGS));
-        operations.addOperation(new Operations.Operation("shutdown -l",LOGOUT));
-        operations.addOperation(new Operations.Operation("extras sleep",SLEEP_STRINGS));
-        operations.addOperation(new Operations.Operation("extras monitorOff",MONITOR_OFF));
+        operations.addNewOperation(new Operation("shutdown -s -t 10", POWER_OFF_STRINGS));
+        operations.addNewOperation(new Operation("shutdown -r -t 10", REBOOT_STRINGS));
+        operations.addNewOperation(new Operation("shutdown -h", HIBERNATE_STRINGS));
+        operations.addNewOperation(new Operation("shutdown -l", LOGOUT));
+        operations.addNewOperation(new Operation("extras sleep", SLEEP_STRINGS));
+        operations.addNewOperation(new Operation("extras monitorOff", MONITOR_OFF));
 
     }
-
 
     private boolean isConstains(String[] array, String equals) {
         for (int i = 0; i < array.length; i++)
@@ -40,12 +33,7 @@ public class WebhookService {
 
     //endregion
     public String pcManager(String operatino) {
-        final String string = operatino;
-
-
-        operations.runOperationByTriggerString(string);
+        operations.runOperationByTriggerString(operatino);
         return "Késsz: " + operatino;
-
     }
-
 }
