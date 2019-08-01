@@ -22,6 +22,7 @@ public class WebhookService {
         operations.addNewOperation(new Operation("shutdown -l", LOGOUT));
         operations.addNewOperation(new Operation("extras sleep", SLEEP_STRINGS));
         operations.addNewOperation(new Operation("extras monitorOff", MONITOR_OFF));
+        operations.addNewOperation(new ApplicationOperation("/games", APPLICATION_START_STRINGS));
 
     }
 
