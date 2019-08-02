@@ -1,5 +1,8 @@
 package hu.service.shutdown.service;
 
+import hu.service.shutdown.addons.ApplicationOperation;
+import hu.service.shutdown.addons.Operation;
+import hu.service.shutdown.addons.Operations;
 import org.springframework.stereotype.Service;
 
 @Service
